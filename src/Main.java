@@ -7,10 +7,21 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        String a = scanner.next();
-        char ch = scanner.next().charAt(0);
-        String b = scanner.next();
+        String str = scanner.nextLine();
+        String res = calc(str);
+        System.out.println(res);
+    }
 
+    public static String calc(String input) throws Exception {
+        //разделим input на массив строк
+        // a,b = 0,2 индексы массива
+        String[] words = input.split(" ");
+        if (words.length != 3) {
+            throw new Exception("Не то количество циферок");
+        }
+        String a = words[0];
+        char ch = words[1].charAt(0);
+        String b = words[2];
         boolean flagA = false;
         boolean flagB = false;
         for (Test v : Test.values()) {
@@ -30,13 +41,16 @@ public class Main {
             first = Test.fromString(a).getArabskayaNoch();
             second = Test.fromString(b).getArabskayaNoch();
 
+            if (first < 0 || first > 10 || second < 0 || second >10) {
+                throw new Exception("Цифра должна быть в диапазоне от 0 до 10");
+            }
             int res = result(first, ch, second);
 
             if(res <= 0) {
                 throw new Exception("Это грустно, но у римлян нет отрицательных чисел :("); //т.к. в римской системе нет отрицательных чисел
             }
             String rim = toRoman(res);
-            System.out.println("Ваш ответ: " + rim + ". Вы великолепны!");
+            return "Ваш ответ: " + rim + ". Вы великолепны!";
         } else if (flagA != flagB) {
             throw new Exception("Вы нехороший человек, больше так не делайте..."); //т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)
 
@@ -44,10 +58,12 @@ public class Main {
             first = Integer.valueOf(a);
             second = Integer.valueOf(b);
 
+            if (first < 0 || first > 10 || second < 0 || second >10) {
+                throw new Exception("Цифра должна быть в диапазоне от 0 до 10");
+            }
             int res = result(first, ch, second);
-            System.out.println("Ваш ответ: " + res + ". Вы великолепны!");
+            return "Ваш ответ: " + res + ". Вы великолепны!";
         }
-        int res = result(first, ch, second);
     }
 
     public static String toRoman(int number) {
